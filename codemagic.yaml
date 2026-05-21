@@ -15,7 +15,9 @@ workflows:
       - name: Set up CocoaPods and Flutter packages
         script: |
           flutter pub get
-          cd ios && pod install --repo-update
+          cd ios
+          pod repo update
+          pod install
       - name: Build iOS App (No Codesign)
         script: |
           flutter build ios --no-codesign --release
@@ -55,7 +57,9 @@ workflows:
       - name: Set up CocoaPods and Flutter packages
         script: |
           flutter pub get
-          cd ios && pod install --repo-update
+          cd ios
+          pod repo update
+          pod install
       - name: Build iOS App Store IPA
         script: |
           # Note: This requires active iOS provisioning profiles and certificate setup
