@@ -19,23 +19,12 @@ workflows:
           cd ios
           pod repo update
           pod install
-      - name: Build iOS App (No Codesign)
+      - name: Build iOS App (Simulator - No Codesign Required)
         script: |
-          echo "CODE_SIGNING_ALLOWED=NO" >> ios/Flutter/Release.xcconfig
-          echo "CODE_SIGNING_REQUIRED=NO" >> ios/Flutter/Release.xcconfig
-          # The Flutter CLI explicitly throws an error if there is no Development Team,
-          # even if xcodebuild successfully generates the unsigned app bundle.
-          flutter build ios --no-codesign --release || echo "Flutter CLI team check failed."
-          
-          if [ -d "build/ios/iphoneos/Runner.app" ]; then
-            echo "Success! Runner.app was built successfully without code signing."
-            exit 0
-          else
-            echo "Error: Runner.app was not generated."
-            exit 1
-          fi
+          # Building for the simulator completely bypasses Apple's Development Team and code signing requirements.
+          flutter build ios --simulator
     artifacts:
-      - build/ios/iphoneos/*.app
+      - build/ios/iphonesimulator/*.app
 
   android-release:
     name: Android App Bundle (.aab) Release Build
