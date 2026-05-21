@@ -1,0 +1,64 @@
+# Codemagic CI/CD configuration for WiseTranslate AI
+# Documentation: https://docs.codemagic.io/yaml/yaml-integration/
+
+workflows:
+  ios-verification:
+    name: iOS Compilation Verification (No Codesign)
+    max_build_duration: 60
+    instance_type: mac_mini_m1
+    working_directory: frontend
+    environment:
+      flutter: 3.38.6
+      xcode: latest
+      cocoapods: default
+    scripts:
+      - name: Set up CocoaPods and Flutter packages
+        script: |
+          flutter pub get
+          cd ios && pod install
+      - name: Build iOS App (No Codesign)
+        script: |
+          flutter build ios --no-codesign --release
+    artifacts:
+      - build/ios/iphoneos/*.app
+
+  android-release:
+    name: Android App Bundle (.aab) Release Build
+    max_build_duration: 30
+    instance_type: mac_mini_m1
+    working_directory: frontend
+    environment:
+      flutter: 3.38.6
+    scripts:
+      - name: Set up Flutter packages
+        script: |
+          flutter pub get
+      - name: Build Android App Bundle
+        script: |
+          flutter build appbundle --release
+    artifacts:
+      - build/app/outputs/bundle/release/*.aab
+
+  ios-release:
+    name: iOS App Store Release Build (Requires Keys)
+    max_build_duration: 60
+    instance_type: mac_mini_m1
+    working_directory: frontend
+    environment:
+      flutter: 3.38.6
+      xcode: latest
+      cocoapods: default
+      # Define environment variables or App Store Connect credentials here later
+      # groups:
+      #   - app_store_credentials
+    scripts:
+      - name: Set up CocoaPods and Flutter packages
+        script: |
+          flutter pub get
+          cd ios && pod install
+      - name: Build iOS App Store IPA
+        script: |
+          # Note: This requires active iOS provisioning profiles and certificate setup
+          flutter build ipa --release
+    artifacts:
+      - build/ios/ipa/*.ipa
