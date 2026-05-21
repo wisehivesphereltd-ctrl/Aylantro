@@ -28,7 +28,6 @@ frontend/.idea/
 .DS_Store
 aylanpro_backend_update/
 test_unzip/
-*.png
 google-services*.json
 GoogleService-Info*.plist
 
