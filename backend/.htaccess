@@ -1,0 +1,28 @@
+# --- AYLANPRO SECURITY SHIELD ---
+
+# 1. Block access to sensitive configuration files
+<FilesMatch "(\.env|service_account\.json|package\.json|package-lock\.json)$">
+    Order deny,allow
+    Deny from all
+</FilesMatch>
+
+# 2. Disable directory listing
+Options -Indexes
+
+# 3. Force HTTPS (Secure Connection)
+RewriteEngine On
+RewriteCond % {HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# 4. Security Headers
+<IfModule mod_headers.c>
+    Header set X-XSS-Protection "1; mode=block"
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+</IfModule>
+
+# 5. Prevent access to hidden files (starting with a dot)
+RewriteRule "(^|/)\." - [F]
+
+# --- END SECURITY SHIELD ---

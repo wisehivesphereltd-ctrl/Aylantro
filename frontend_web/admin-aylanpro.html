@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aylantro AI | Admin Console</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="logo.png">
+    <style>
+        :root { 
+            --primary: #800000; 
+            --secondary: #D4AF37; 
+            --dark: #0f0f12; 
+            --glass: rgba(30, 30, 38, 0.7); 
+        }
+        body { 
+            background-color: var(--dark); 
+            color: white; 
+            font-family: 'Outfit', sans-serif; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            margin: 0; 
+            background-image: radial-gradient(circle at 50% 50%, rgba(128, 0, 0, 0.1) 0%, transparent 100%);
+        }
+        .admin-card { 
+            background: var(--glass); 
+            padding: 50px; 
+            border-radius: 32px; 
+            border: 1px solid rgba(255,255,255,0.05); 
+            width: 100%; 
+            max-width: 500px; 
+            box-shadow: 0 40px 100px rgba(0,0,0,0.6); 
+            backdrop-filter: blur(20px); 
+            transition: all 0.5s ease;
+        }
+        h1 { color: var(--secondary); margin-bottom: 30px; text-align: center; font-weight: 800; letter-spacing: -1px; }
+        .input-group { margin-bottom: 25px; }
+        label { display: block; margin-bottom: 10px; color: rgba(255,255,255,0.4); font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        input, textarea { 
+            width: 100%; 
+            padding: 16px; 
+            border-radius: 16px; 
+            background: rgba(0,0,0,0.4); 
+            border: 1px solid rgba(255,255,255,0.05); 
+            color: white; 
+            font-size: 1rem; 
+            outline: none;
+            transition: all 0.3s;
+        }
+        input:focus, textarea:focus { border-color: var(--secondary); background: rgba(0,0,0,0.6); }
+        .btn { 
+            width: 100%; 
+            padding: 16px; 
+            border-radius: 16px; 
+            border: none; 
+            background: var(--primary); 
+            color: white; 
+            font-weight: 800; 
+            cursor: pointer; 
+            transition: all 0.4s; 
+            margin-top: 20px;
+            letter-spacing: 1px;
+        }
+        .btn:hover { 
+            transform: translateY(-4px); 
+            box-shadow: 0 20px 40px rgba(128, 0, 0, 0.4); 
+            background: #a00000;
+        }
+        #status { text-align: center; margin-top: 25px; font-weight: 600; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+    <div class="admin-card" id="loginCard">
+        <div style="text-align: center; margin-bottom: 30px;">
+            <i class="fas fa-shield-halved" style="font-size: 3rem; color: var(--secondary);"></i>
+        </div>
+        <h1>AYLANTRO ADMIN</h1>
+        <div class="input-group">
+            <input type="password" id="adminPass" placeholder="Enter Security Key">
+            <button class="btn" onclick="checkPass()">ACCESS DASHBOARD</button>
+        </div>
+    </div>
+
+    <div class="admin-card" id="dashboard" style="display: none;">
+        <h1><i class="fas fa-satellite-dish"></i> GLOBAL BROADCAST</h1>
+        <div class="input-group">
+            <label>Announcement Title</label>
+            <input type="text" id="notifTitle" placeholder="e.g. Aylantro Pro is Live!">
+        </div>
+        <div class="input-group">
+            <label>Message Content</label>
+            <textarea id="notifBody" rows="4" placeholder="Craft your message for all users..."></textarea>
+        </div>
+        <button class="btn" onclick="sendNotification()" id="sendBtn">EXECUTE BROADCAST</button>
+        <div id="status"></div>
+        
+        <hr style="border: 1px solid rgba(255,255,255,0.05); margin: 30px 0;">
+
+        <h1><i class="fas fa-ad"></i> REMOTE ADS HUB</h1>
+        <div class="input-group">
+            <label>Ad Title</label>
+            <input type="text" id="adTitle" placeholder="e.g. SUMMER MEGA SALE!">
+        </div>
+        <div class="input-group">
+            <label>Ad Subtitle</label>
+            <input type="text" id="adSubtitle" placeholder="e.g. Get 50% off Aylantro Premium">
+        </div>
+        <div class="input-group">
+            <label>Banner Image URL (Optional)</label>
+            <input type="url" id="adImage" placeholder="https://example.com/promo-banner.jpg">
+        </div>
+        <button class="btn" style="background: var(--secondary); color: var(--dark);" onclick="updateAd()" id="adBtn">DEPLOY AD TO ALL USERS</button>
+        <div id="adStatus" style="text-align: center; margin-top: 15px; font-weight: 600; font-size: 0.9rem;"></div>
+    </div>
+
+    <script>
+        const API_BASE = 'https://aylanpro.wisehivesphere.com/api';
+        
+        function checkPass() {
+            // Updated secure check
+            if(document.getElementById('adminPass').value === 'Aylantro@Admin2026') {
+                document.getElementById('loginCard').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+            } else {
+                alert('Access Denied: Invalid Security Key');
+            }
+        }
+
+        async function sendNotification() {
+            const title = document.getElementById('notifTitle').value;
+            const body = document.getElementById('notifBody').value;
+            const status = document.getElementById('status');
+
+            if(!title || !body) return alert('Protocol Error: All fields required');
+
+            status.innerText = 'Transmitting...';
+            status.style.color = 'var(--secondary)';
+
+            try {
+                const response = await fetch(`${API_BASE}/admin/send-notification`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title, body })
+                });
+                const data = await response.json();
+                if(data.success) {
+                    status.innerText = '📡 TRANSMISSION SUCCESSFUL';
+                    status.style.color = '#4ade80';
+                } else {
+                    status.innerText = '🚨 FAILED: ' + data.details;
+                    status.style.color = '#f87171';
+                }
+            } catch (err) {
+                status.innerText = '🌐 CONNECTION INTERRUPTED';
+                status.style.color = '#f87171';
+            }
+        }
+
+        async function updateAd() {
+            const title = document.getElementById('adTitle').value;
+            const subtitle = document.getElementById('adSubtitle').value;
+            const imageUrl = document.getElementById('adImage').value;
+            const status = document.getElementById('adStatus');
+
+            if(!title || !subtitle) return alert('Protocol Error: Ad Title and Subtitle required');
+
+            status.innerText = 'Deploying Ad...';
+            status.style.color = 'var(--secondary)';
+
+            try {
+                const response = await fetch(`${API_BASE}/admin/update-ad`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title, subtitle, imageUrl, link: '' })
+                });
+                const data = await response.json();
+                if(data.success) {
+                    status.innerText = '📺 AD DEPLOYED SUCCESSFULLY';
+                    status.style.color = '#4ade80';
+                } else {
+                    status.innerText = '🚨 AD DEPLOYMENT FAILED';
+                    status.style.color = '#f87171';
+                }
+            } catch (err) {
+                status.innerText = '🌐 CONNECTION INTERRUPTED';
+                status.style.color = '#f87171';
+            }
+        }
+    </script>
+</body>
+</html>
