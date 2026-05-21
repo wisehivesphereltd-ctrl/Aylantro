@@ -21,6 +21,8 @@ workflows:
           pod install
       - name: Build iOS App (No Codesign)
         script: |
+          echo "CODE_SIGNING_ALLOWED=NO" >> ios/Flutter/Release.xcconfig
+          echo "CODE_SIGNING_REQUIRED=NO" >> ios/Flutter/Release.xcconfig
           flutter build ios --no-codesign --release
     artifacts:
       - build/ios/iphoneos/*.app
