@@ -1,4 +1,4 @@
-# Codemagic CI/CD configuration for WiseTranslate AI
+# Codemagic CI/CD configuration for Aylantro
 # Documentation: https://docs.codemagic.io/yaml/yaml-integration/
 
 workflows:
@@ -8,7 +8,7 @@ workflows:
     instance_type: mac_mini_m1
     working_directory: frontend
     environment:
-      flutter: 3.38.6
+      flutter: stable
       xcode: latest
       cocoapods: default
     scripts:
@@ -28,7 +28,7 @@ workflows:
     instance_type: mac_mini_m1
     working_directory: frontend
     environment:
-      flutter: 3.38.6
+      flutter: stable
     scripts:
       - name: Set up Flutter packages
         script: |
@@ -45,7 +45,7 @@ workflows:
     instance_type: mac_mini_m1
     working_directory: frontend
     environment:
-      flutter: 3.38.6
+      flutter: stable
       xcode: latest
       cocoapods: default
       # Define environment variables or App Store Connect credentials here later
