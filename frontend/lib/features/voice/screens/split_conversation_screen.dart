@@ -143,9 +143,9 @@ class _SplitConversationScreenState extends State<SplitConversationScreen> {
           // Divider bar with close button
           Container(
             height: 54,
-            color: isDark ? AppTheme.darkSurfaceColor : Colors.white,
-            decoration: isDark ? null : const BoxDecoration(
-              border: Border(
+            decoration: BoxDecoration(
+              color: isDark ? AppTheme.darkSurfaceColor : Colors.white,
+              border: isDark ? null : const Border(
                 top: BorderSide(color: Colors.black12),
                 bottom: BorderSide(color: Colors.black12),
               ),

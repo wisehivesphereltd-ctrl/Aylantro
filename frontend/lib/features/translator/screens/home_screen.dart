@@ -241,7 +241,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
           child: Container(
-            height: 180,
+            constraints: const BoxConstraints(minHeight: 180),
             padding: const EdgeInsets.all(28),
             decoration: BoxDecoration(
               color: isDark ? Colors.white.withOpacity(0.08) : Colors.white,
@@ -385,7 +385,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         crossAxisCount: 2,
         crossAxisSpacing: 16,
         mainAxisSpacing: 16,
-        childAspectRatio: 1.45,
+        childAspectRatio: 1.15,
       ),
       itemCount: actions.length,
       itemBuilder: (context, index) {
