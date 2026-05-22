@@ -5,7 +5,7 @@
 		<key>CFBundleDevelopmentRegion</key>
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
 		<key>CFBundleDisplayName</key>
-		<string>Frontend</string>
+		<string>Aylantro</string>
 		<key>CFBundleExecutable</key>
 		<string>$(EXECUTABLE_NAME)</string>
 		<key>CFBundleIdentifier</key>
@@ -13,7 +13,7 @@
 		<key>CFBundleInfoDictionaryVersion</key>
 		<string>6.0</string>
 		<key>CFBundleName</key>
-		<string>frontend</string>
+		<string>Aylantro</string>
 		<key>CFBundlePackageType</key>
 		<string>APPL</string>
 		<key>CFBundleShortVersionString</key>
@@ -49,5 +49,15 @@
 		<true/>
 		<key>UIViewControllerBasedStatusBarAppearance</key>
 		<false/>
+		<key>GADApplicationIdentifier</key>
+		<string>ca-app-pub-3940256099942544~1458002511</string>
+		<key>NSCameraUsageDescription</key>
+		<string>Aylantro needs access to your camera for real-time text recognition and translation.</string>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>Aylantro needs access to your microphone for voice translation features.</string>
+		<key>NSSpeechRecognitionUsageDescription</key>
+		<string>Aylantro needs speech recognition for accurate voice translations.</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>Aylantro needs access to your photo library to translate text from images.</string>
 	</dict>
 </plist>
